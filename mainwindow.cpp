@@ -16,18 +16,22 @@ MainWindow::MainWindow(QWidget *parent)
     STR3060_Receiver=new std::thread(&MainWindow::STR3060_Check_Receive,this,ctx);
     STR3060_Receiver->detach();
 
+    {
+        dataview=new Dialog_DataView(ctx,this);
+    }
+
     UI_Timer=new QTimer(this);
     {//设置刷新UI的定时器
 
         UI_Timer->start(800);
-        UI_Timer->start();
+        UI_Timer->stop();
          connect(UI_Timer,SIGNAL(timeout()),this,SLOT(UI_Timer_timeout()));
     }
     Request_Timer=new QTimer(this);
     {//设置请求数据的定时器
 
         Request_Timer->start(3500);
-        Request_Timer->start();
+        Request_Timer->stop();
         connect(Request_Timer,SIGNAL(timeout()),this,SLOT(Request_Timer_timeout()));
     }
     {//秒节拍设置
@@ -147,6 +151,13 @@ void MainWindow::Open_SerialPort()
        ui->tabWidget->setTabEnabled(4,true);//精确电压电流设置页面
       ui->statusbar->showMessage("打开串口成功!\n\r");
       Is_SerialPort_Open=true;
+      {//请求数据
+          STR3060_Request_Data(ctx);
+      }
+      {//打开定时器
+          UI_Timer->start();
+          Request_Timer->start();
+      }
     }
     else
     {
@@ -165,9 +176,13 @@ void MainWindow::Close_SerialPort()
        ui->group_STR3060->setEnabled(false);
        ui->tabWidget->setTabEnabled(2,false);//设置电压设置页面
        ui->tabWidget->setTabEnabled(3,false);//设置电流设置页面
-        ui->tabWidget->setTabEnabled(4,false);//精确电压电流设置页面
+       ui->tabWidget->setTabEnabled(4,false);//精确电压电流设置页面
        Update_Serialport();
        Is_SerialPort_Open=false;
+       {//关闭定时器
+           UI_Timer->stop();
+           Request_Timer->stop();
+       }
    }
    else
    {
@@ -179,6 +194,10 @@ void MainWindow::Close_SerialPort()
 void MainWindow::ToTab1_clicked()
 {
     ui->tabWidget->setCurrentIndex(0);
+    {//打开预览窗口
+        dataview->show();
+        dataview->activateWindow();
+    }
 }
 
 void MainWindow::S_Reset_clicked()

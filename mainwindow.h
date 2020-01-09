@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <STR3060.h>
 #include <QTimer>
+#include <dialog_dataview.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,6 +35,7 @@ private:
     QTimer   *Second_Tick_Timer;//实现秒节拍的定时器
     uint32_t Get_second_tick(uint32_t start=0);//获得秒节拍
 
+    Dialog_DataView * dataview;
 
 public slots:
 

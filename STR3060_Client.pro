@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets serialport printsupport
 
 CONFIG += c++11
 
@@ -18,15 +18,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     STR3060.c \
     STR3060_Helper.C \
+    dialog_dataview.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     STR3060.h \
     STR3060_Helper.h \
-    mainwindow.h
+    dialog_dataview.h \
+    mainwindow.h \
+    qcustomplot.h
 
 FORMS += \
+    dialog_dataview.ui \
     mainwindow.ui
 
 RC_FILE=  window_resources.rc
