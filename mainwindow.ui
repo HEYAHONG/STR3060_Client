@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="Generic">
      <attribute name="title">
@@ -1624,6 +1624,9 @@
        <property name="tickPosition">
         <enum>QSlider::NoTicks</enum>
        </property>
+       <property name="tickInterval">
+        <number>1</number>
+       </property>
       </widget>
       <widget class="QSlider" name="S_U_UA_Phase">
        <property name="geometry">
@@ -1636,6 +1639,9 @@
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickInterval">
+        <number>1</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_36">
@@ -1742,6 +1748,9 @@
        <property name="tickPosition">
         <enum>QSlider::NoTicks</enum>
        </property>
+       <property name="tickInterval">
+        <number>1</number>
+       </property>
       </widget>
       <widget class="QSlider" name="S_U_UB_Phase">
        <property name="geometry">
@@ -1754,6 +1763,9 @@
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickInterval">
+        <number>1</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_38">
@@ -1860,6 +1872,9 @@
        <property name="tickPosition">
         <enum>QSlider::NoTicks</enum>
        </property>
+       <property name="tickInterval">
+        <number>1</number>
+       </property>
       </widget>
       <widget class="QSlider" name="S_U_UC_Phase">
        <property name="geometry">
@@ -1872,6 +1887,9 @@
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickInterval">
+        <number>1</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_40">
@@ -1959,8 +1977,8 @@
      <widget class="QGroupBox" name="group_S_I_C">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>160</y>
+        <x>10</x>
+        <y>170</y>
         <width>521</width>
         <height>80</height>
        </rect>
@@ -1983,6 +2001,9 @@
        <property name="tickPosition">
         <enum>QSlider::NoTicks</enum>
        </property>
+       <property name="tickInterval">
+        <number>1</number>
+       </property>
       </widget>
       <widget class="QSlider" name="S_I_IC_Phase">
        <property name="geometry">
@@ -1995,6 +2016,9 @@
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickInterval">
+        <number>1</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_42">
@@ -2077,8 +2101,8 @@
      <widget class="QGroupBox" name="group_S_I_B">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>80</y>
+        <x>10</x>
+        <y>90</y>
         <width>521</width>
         <height>80</height>
        </rect>
@@ -2101,6 +2125,9 @@
        <property name="tickPosition">
         <enum>QSlider::NoTicks</enum>
        </property>
+       <property name="tickInterval">
+        <number>1</number>
+       </property>
       </widget>
       <widget class="QSlider" name="S_I_IB_Phase">
        <property name="geometry">
@@ -2113,6 +2140,9 @@
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickInterval">
+        <number>1</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_44">
@@ -2195,8 +2225,8 @@
      <widget class="QGroupBox" name="group_S_I_A">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
+        <x>10</x>
+        <y>10</y>
         <width>521</width>
         <height>80</height>
        </rect>
@@ -2219,6 +2249,9 @@
        <property name="tickPosition">
         <enum>QSlider::NoTicks</enum>
        </property>
+       <property name="tickInterval">
+        <number>1</number>
+       </property>
       </widget>
       <widget class="QSlider" name="S_I_IA_Phase">
        <property name="geometry">
@@ -2231,6 +2264,9 @@
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="tickInterval">
+        <number>1</number>
        </property>
       </widget>
       <widget class="QLabel" name="label_46">
@@ -2307,6 +2343,455 @@
        </property>
        <property name="value" stdset="0">
         <double>123456789.000000000000000</double>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Value_Settings">
+     <attribute name="title">
+      <string>页</string>
+     </attribute>
+     <widget class="QGroupBox" name="group_value">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>541</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>值设定</string>
+      </property>
+      <widget class="QGroupBox" name="group_value_A">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>141</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>A</string>
+       </property>
+       <widget class="QLineEdit" name="S_V_UA">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>220</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_IA">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_48">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string> V</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_49">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>50</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string> A</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="group_value_B">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>20</y>
+         <width>141</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>B</string>
+       </property>
+       <widget class="QLabel" name="label_50">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string> V</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_51">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>50</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string> A</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_UB">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>220</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_IB">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="group_value_C">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>20</y>
+         <width>141</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>C</string>
+       </property>
+       <widget class="QLabel" name="label_52">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string> V</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_53">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>50</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string> A</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_UC">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>220</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_IC">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>5</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="S_V_Set_Value">
+       <property name="geometry">
+        <rect>
+         <x>450</x>
+         <y>20</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>发送设置命令
+（可能失败）</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="group_value_phase">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>541</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>相位设定</string>
+      </property>
+      <widget class="QGroupBox" name="group_value_A_phase">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>141</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>A</string>
+       </property>
+       <widget class="QLineEdit" name="S_V_UA_phase">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_IA_phase">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_54">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>(U)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_55">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>50</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>(I)</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="group_value_B_phase">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>20</y>
+         <width>141</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>B</string>
+       </property>
+       <widget class="QLabel" name="label_56">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>(U)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_57">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>50</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>(I)</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_UB_phase">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>120</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_IB_phase">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>120</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="group_value_C_phase">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>20</y>
+         <width>141</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>C</string>
+       </property>
+       <widget class="QLabel" name="label_58">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>20</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>(U)</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_59">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>50</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>(I)</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_UC_phase">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>20</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>240</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="S_V_IC_phase">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>113</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>240</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QPushButton" name="S_V_Set_Value_phase">
+       <property name="geometry">
+        <rect>
+         <x>450</x>
+         <y>20</y>
+         <width>81</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>发送设置命令
+（可能失败）</string>
        </property>
       </widget>
      </widget>

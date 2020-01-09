@@ -42,16 +42,19 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tabWidget->setTabText(1,"STR3060设置");
         ui->tabWidget->setTabText(2,"电压设置");
         ui->tabWidget->setTabText(3,"电流设置");
+        ui->tabWidget->setTabText(4,"精确电压电流设置");
 
 
         ui->Generic->setWindowTitle("概览");
         ui->Settings->setWindowTitle("STR3060设置");
         ui->Settings->setWindowTitle("电压设置");
         ui->Settings->setWindowTitle("电流设置");
+        ui->Settings->setWindowTitle("精确电压电流设置");
 
 
         ui->tabWidget->setTabEnabled(2,false);//设置电压设置页面
         ui->tabWidget->setTabEnabled(3,false);//设置电流设置页面
+        ui->tabWidget->setTabEnabled(4,false);//精确电压电流设置页面
         ui->tabWidget->setCurrentIndex(1);
     }
 
@@ -141,6 +144,7 @@ void MainWindow::Open_SerialPort()
       ui->group_STR3060->setEnabled(true);
       ui->tabWidget->setTabEnabled(2,true);//设置电压设置页面
       ui->tabWidget->setTabEnabled(3,true);//设置电流设置页面
+       ui->tabWidget->setTabEnabled(4,true);//精确电压电流设置页面
       ui->statusbar->showMessage("打开串口成功!\n\r");
       Is_SerialPort_Open=true;
     }
@@ -161,6 +165,7 @@ void MainWindow::Close_SerialPort()
        ui->group_STR3060->setEnabled(false);
        ui->tabWidget->setTabEnabled(2,false);//设置电压设置页面
        ui->tabWidget->setTabEnabled(3,false);//设置电流设置页面
+        ui->tabWidget->setTabEnabled(4,false);//精确电压电流设置页面
        Update_Serialport();
        Is_SerialPort_Open=false;
    }
@@ -600,6 +605,77 @@ void MainWindow::UI_Timer_timeout()
         }
 
     }
+    {//STR3060设置界面
+        static uint32_t last_second=0;
+        if(Get_second_tick(last_second)>=20)
+        {//间隔一段时间更新,或者刚初始化
+            {//连接模式设置
+                switch(ctx->Link_Mode)
+                {
+                default:
+                    break;
+                case 0:
+                    if(!ui->S_Link_0->isChecked())
+                    {
+                        ui->S_Link_0->setChecked(true);
+                    }
+                    break;
+                case 1:
+                    if(!ui->S_Link_1->isChecked())
+                    {
+                        ui->S_Link_1->setChecked(true);
+                    }
+                    break;
+                case 2:
+                    if(!ui->S_Link_2->isChecked())
+                    {
+                        ui->S_Link_2->setChecked(true);
+                    }
+                    break;
+                case 3:
+                    if(!ui->S_Link_3->isChecked())
+                    {
+                        ui->S_Link_3->setChecked(true);
+                    }
+                    break;
+                }
+            }
+
+            {//量程设定
+                if((STR3060_Get_ULimit(ctx,STR3060_A)==STR3060_Get_ULimit(ctx,STR3060_B)) && (STR3060_Get_ULimit(ctx,STR3060_A)==STR3060_Get_ULimit(ctx,STR3060_B)))
+                {
+                    if((STR3060_Get_ULimit(ctx,STR3060_A)< ui->S_U_Limit->currentText().toDouble()*0.95) || (STR3060_Get_ULimit(ctx,STR3060_A)> ui->S_U_Limit->currentText().toDouble()*1.05))
+                    {
+
+                        ui->S_U_Limit->setCurrentIndex(ctx->UA_Limit);
+
+                    }
+                }
+
+                if((STR3060_Get_ILimit(ctx,STR3060_A)==STR3060_Get_ILimit(ctx,STR3060_B)) && (STR3060_Get_ILimit(ctx,STR3060_A)==STR3060_Get_ILimit(ctx,STR3060_B)))
+                {
+                    if((STR3060_Get_ILimit(ctx,STR3060_A)< ui->S_I_Limit->currentText().toDouble()*0.95) || (STR3060_Get_ILimit(ctx,STR3060_A)> ui->S_I_Limit->currentText().toDouble()*1.05))
+                    {
+
+                        ui->S_I_Limit->setCurrentIndex(ctx->IA_Limit);
+
+                    }
+                }
+            }
+            {
+                if((STR3060_Get_Freq(ctx)*0.99 >=ui->S_Freq->text().toDouble()) ||(STR3060_Get_Freq(ctx)*1.01 <=ui->S_Freq->text().toDouble()) )
+                {
+                    char buff[50]={0};
+                    sprintf(buff,"%Lf",STR3060_Get_Freq(ctx));
+                    ui->S_Freq->setText(buff);
+                }
+            }
+
+            last_second=Get_second_tick();
+        }
+
+    }
+
     {//电压界面
         {//A
             {//滑块最大值设定
@@ -628,7 +704,7 @@ void MainWindow::UI_Timer_timeout()
             {//滑块值更新
                 static uint32_t last_second_count=0;
 
-                if(Get_second_tick(last_second_count)>10);//10秒一次
+                if(Get_second_tick(last_second_count)>=4)//4秒一次
                 {
                     static int U_Last=ctx->UA.dword,U_Phase_Last=ctx->UA_Phase.dword;
 
@@ -650,6 +726,7 @@ void MainWindow::UI_Timer_timeout()
                      }
 
                      last_second_count=Get_second_tick();
+
                 }
 
             }
@@ -683,7 +760,7 @@ void MainWindow::UI_Timer_timeout()
             {//滑块值更新
                 static uint32_t last_second_count=0;
 
-                if(Get_second_tick(last_second_count)>10);//10秒一次
+                if(Get_second_tick(last_second_count)>10)//10秒一次
                 {
                     static int U_Last=ctx->UB.dword,U_Phase_Last=ctx->UB_Phase.dword;
 
@@ -706,6 +783,9 @@ void MainWindow::UI_Timer_timeout()
 
                      last_second_count=Get_second_tick();
                 }
+             }
+           }
+
 
                 {//C
                     {//滑块最大值设定
@@ -734,7 +814,7 @@ void MainWindow::UI_Timer_timeout()
                     {//滑块值更新
                         static uint32_t last_second_count=0;
 
-                        if(Get_second_tick(last_second_count)>10);//10秒一次
+                        if(Get_second_tick(last_second_count)>=4)//4秒一次
                         {
                             static int U_Last=ctx->UC.dword,U_Phase_Last=ctx->UC_Phase.dword;
 
@@ -761,10 +841,10 @@ void MainWindow::UI_Timer_timeout()
                     }
                 }
 
-            }
-        }
+         }
 
-    }
+
+
 
 
     {//电流界面
@@ -795,7 +875,7 @@ void MainWindow::UI_Timer_timeout()
             {//滑块值更新
                 static uint32_t last_second_count=0;
 
-                if(Get_second_tick(last_second_count)>10);//10秒一次
+                if(Get_second_tick(last_second_count)>=4)//4秒一次
                 {
                     static int I_Last=ctx->IA.dword,I_Phase_Last=ctx->IA_Phase.dword;
 
@@ -850,7 +930,7 @@ void MainWindow::UI_Timer_timeout()
             {//滑块值更新
                 static uint32_t last_second_count=0;
 
-                if(Get_second_tick(last_second_count)>10);//10秒一次
+                if(Get_second_tick(last_second_count)>=4)//4秒一次
                 {
                     static int I_Last=ctx->IB.dword,I_Phase_Last=ctx->IB_Phase.dword;
 
@@ -873,6 +953,8 @@ void MainWindow::UI_Timer_timeout()
 
                      last_second_count=Get_second_tick();
                 }
+             }
+           }
 
                 {//C
                     {//滑块最大值设定
@@ -901,7 +983,7 @@ void MainWindow::UI_Timer_timeout()
                     {//滑块值更新
                         static uint32_t last_second_count=0;
 
-                        if(Get_second_tick(last_second_count)>10);//10秒一次
+                        if(Get_second_tick(last_second_count)>=4)//4秒一次
                         {
                             static int I_Last=ctx->IC.dword,I_Phase_Last=ctx->IC_Phase.dword;
 
@@ -928,10 +1010,11 @@ void MainWindow::UI_Timer_timeout()
                     }
                 }
 
-            }
-        }
+
+
 
     }
+
 }
 
 void MainWindow::Request_Timer_timeout()
@@ -951,6 +1034,8 @@ void MainWindow::Second_Tick_Timer_timeout()
     {
         second_tick_count-=overflow;
     }
+
+    //qDebug()<<"已启动时间:"<<second_tick_count<<"s";
 }
 
 uint32_t MainWindow::Get_second_tick(uint32_t start)
@@ -1106,4 +1191,146 @@ void MainWindow::on_S_I_IC_Phase_sliderReleased()
 {
     STR3060_Set_Phase(ctx,-1,-1,-1,-1,-1,(long double)ui->S_I_IC_Phase->value()/STR3060_Get_KPhase(ctx));
     ui->statusbar->showMessage("C相相位设置命令已发出!\n\r");
+}
+
+void MainWindow::on_S_V_UA_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_UA->setText("220");
+    }
+}
+
+void MainWindow::on_S_V_UB_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_UB->setText("220");
+    }
+}
+
+void MainWindow::on_S_V_UC_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_UC->setText("220");
+    }
+}
+
+void MainWindow::on_S_V_IA_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_IA->setText("5");
+    }
+}
+
+void MainWindow::on_S_V_IB_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_IB->setText("5");
+    }
+}
+
+void MainWindow::on_S_V_IC_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_IC->setText("5");
+    }
+}
+
+void MainWindow::on_S_V_Set_Value_clicked()
+{
+    STR3060_Set_Value(ctx,(long double)ui->S_V_UA->text().toDouble(),
+                          (long double)ui->S_V_UB->text().toDouble(),
+                          (long double)ui->S_V_UC->text().toDouble(),
+                          (long double)ui->S_V_IA->text().toDouble(),
+                          (long double)ui->S_V_IB->text().toDouble(),
+                          (long double)ui->S_V_IC->text().toDouble());
+    ui->statusbar->showMessage("发送值设定命令成功\n\r");
+}
+
+void MainWindow::on_S_V_UA_phase_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_UA_phase->setText("0");
+    }
+}
+
+void MainWindow::on_S_V_IA_phase_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_IA_phase->setText("0");
+    }
+}
+
+void MainWindow::on_S_V_UB_phase_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_UB_phase->setText("120");
+    }
+}
+
+void MainWindow::on_S_V_IB_phase_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_IB_phase->setText("120");
+    }
+}
+
+void MainWindow::on_S_V_UC_phase_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_UC_phase->setText("240");
+    }
+}
+
+void MainWindow::on_S_V_IC_phase_textChanged(const QString &arg1)
+{
+    bool is=false;
+    arg1.toDouble(&is);
+    if(!is)
+    {
+        ui->S_V_IC_phase->setText("240");
+    }
+}
+
+void MainWindow::on_S_V_Set_Value_phase_clicked()
+{
+    STR3060_Set_Phase(ctx,(long double)ui->S_V_UA_phase->text().toDouble(),
+                          (long double)ui->S_V_UB_phase->text().toDouble(),
+                          (long double)ui->S_V_UC_phase->text().toDouble(),
+                          (long double)ui->S_V_IA_phase->text().toDouble(),
+                          (long double)ui->S_V_IB_phase->text().toDouble(),
+                          (long double)ui->S_V_IC_phase->text().toDouble());
+    ui->statusbar->showMessage("发送相位设定命令成功\n\r");
 }

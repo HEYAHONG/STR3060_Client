@@ -86,5 +86,19 @@ private slots:
     void on_S_I_IC_Phase_sliderMoved(int position);
     void on_S_I_IC_sliderReleased();
     void on_S_I_IC_Phase_sliderReleased();
+    void on_S_V_UA_textChanged(const QString &arg1);
+    void on_S_V_UB_textChanged(const QString &arg1);
+    void on_S_V_UC_textChanged(const QString &arg1);
+    void on_S_V_IA_textChanged(const QString &arg1);
+    void on_S_V_IB_textChanged(const QString &arg1);
+    void on_S_V_IC_textChanged(const QString &arg1);
+    void on_S_V_Set_Value_clicked();
+    void on_S_V_UA_phase_textChanged(const QString &arg1);
+    void on_S_V_IA_phase_textChanged(const QString &arg1);
+    void on_S_V_UB_phase_textChanged(const QString &arg1);
+    void on_S_V_IB_phase_textChanged(const QString &arg1);
+    void on_S_V_UC_phase_textChanged(const QString &arg1);
+    void on_S_V_IC_phase_textChanged(const QString &arg1);
+    void on_S_V_Set_Value_phase_clicked();
 };
 #endif // MAINWINDOW_H
