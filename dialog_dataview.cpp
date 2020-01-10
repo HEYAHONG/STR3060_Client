@@ -29,28 +29,33 @@ Dialog_DataView::Dialog_DataView(STR3060_Context *ctx_p,QWidget *parent) :
             {//画圆
                 ellipse=new QCPItemEllipse(ui->view);
                 ellipse->setVisible(true);
-                ellipse->setPen(QPen(Qt::black));
+                QPen pen(Qt::black);
+                pen.setStyle(Qt::DashLine);
+                ellipse->setPen(pen);
 
 
             }
             {//线
+                QPen pen(Qt::gray);
+                pen.setStyle(Qt::DashLine);
+
                 line_0=new QCPItemLine(ui->view);
                 line_0->setVisible(true);
-                line_0->setPen(QPen(Qt::yellow));
+                line_0->setPen(pen);
 
 
 
                 line_1=new QCPItemLine(ui->view);
                 line_1->setVisible(true);
-                line_1->setPen(QPen(Qt::yellow));
+                line_1->setPen(pen);
 
                 line_2=new QCPItemLine(ui->view);
                 line_2->setVisible(true);
-                line_2->setPen(QPen(Qt::yellow));
+                line_2->setPen(pen);
 
                 line_3=new QCPItemLine(ui->view);
                 line_3->setVisible(true);
-                line_3->setPen(QPen(Qt::yellow));
+                line_3->setPen(pen);
 
 
 
@@ -144,15 +149,17 @@ void Dialog_DataView::Update_A()
             line->end->setAxes(ui->view->xAxis,ui->view->yAxis);
             line->end->setCoords(X_End,Y_End);
 
+
             {//写文字
                 static QCPItemText * text=new  QCPItemText(ui->view);
                 text->setPen(QPen(Qt::red));
                 text->setColor(QColor(Qt::red));
                 text->setFont(QFont(font().family(),8));//设置字体
-                text->setText("U(A)");
+                text->setText("UA");
                 text->position->setAxes(ui->view->xAxis,ui->view->yAxis);
                 text->position->setCoords(X_End*2/3,Y_End*2/3);
             }
+
 
         }
 
@@ -162,8 +169,9 @@ void Dialog_DataView::Update_A()
         static QCPItemLine * line=NULL;
         if(line ==NULL)
         {
+            QPen pen(Qt::red);
             line=new QCPItemLine(ui->view);
-            line->setPen(QPen(Qt::red));
+            line->setPen(pen);
             line->setVisible(true);
             line->setHead(QCPLineEnding::esSpikeArrow);
         }
@@ -180,7 +188,7 @@ void Dialog_DataView::Update_A()
                 text->setPen(QPen(Qt::red));
                 text->setColor(QColor(Qt::red));
                 text->setFont(QFont(font().family(),8));//设置字体
-                text->setText("I(A)");
+                text->setText("IA");
                 text->position->setAxes(ui->view->xAxis2,ui->view->yAxis2);
                 text->position->setCoords(X_End/3,Y_End/3);
             }
@@ -214,7 +222,7 @@ void Dialog_DataView::Update_B()
                 text->setPen(QPen(Qt::blue));
                 text->setColor(QColor(Qt::blue));
                 text->setFont(QFont(font().family(),8));//设置字体
-                text->setText("U(B)");
+                text->setText("UB");
                 text->position->setAxes(ui->view->xAxis,ui->view->yAxis);
                 text->position->setCoords(X_End*2/3,Y_End*2/3);
             }
@@ -245,7 +253,7 @@ void Dialog_DataView::Update_B()
                 text->setPen(QPen(Qt::blue));
                 text->setColor(QColor(Qt::blue));
                 text->setFont(QFont(font().family(),8));//设置字体
-                text->setText("I(B)");
+                text->setText("IB");
                 text->position->setAxes(ui->view->xAxis2,ui->view->yAxis2);
                 text->position->setCoords(X_End/3,Y_End/3);
             }
@@ -279,7 +287,7 @@ void Dialog_DataView::Update_C()
                 text->setPen(QPen(Qt::green));
                 text->setColor(QColor(Qt::green));
                 text->setFont(QFont(font().family(),8));//设置字体
-                text->setText("U(C)");
+                text->setText("UC");
                 text->position->setAxes(ui->view->xAxis,ui->view->yAxis);
                 text->position->setCoords(X_End*2/3,Y_End*2/3);
             }
@@ -310,7 +318,7 @@ void Dialog_DataView::Update_C()
                 text->setPen(QPen(Qt::green));
                 text->setColor(QColor(Qt::green));
                 text->setFont(QFont(font().family(),8));//设置字体
-                text->setText("I(C)");
+                text->setText("IC");
                 text->position->setAxes(ui->view->xAxis2,ui->view->yAxis2);
                 text->position->setCoords(X_End/3,Y_End/3);
             }
