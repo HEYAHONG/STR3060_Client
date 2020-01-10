@@ -216,23 +216,25 @@ void MainWindow::STR3060_Check_Receive(STR3060_Context *ctx)
 
     while(1)
     {
-        #ifdef WIN32
-        //WaitForSingleObject(ctx->handle,INFINITE);
-        #endif
+
         if(Is_SerialPort_Open)
         {
+            STR3060_mutex.lock();
             if(STR3060_Receive_Data(ctx))
             {
+            STR3060_mutex.unlock();
                 qDebug()<<"接收STR3060消息";
             }
             else
             {
+            STR3060_mutex.unlock();
 #ifdef  WIN32
             Sleep(5);
 #else
 #error  不支持
 #endif
             }
+
 
         }
         else
@@ -243,11 +245,13 @@ void MainWindow::STR3060_Check_Receive(STR3060_Context *ctx)
 #error  不支持
 #endif
         }
+
     }
 }
 
 void MainWindow::S_Link_toggled(bool checked)
 {
+    STR3060_mutex.lock();
     if(checked)
     {//选中的选项
         if(ui->S_Link_0->isChecked())
@@ -272,31 +276,40 @@ void MainWindow::S_Link_toggled(bool checked)
         }
 
     }
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::S_U_Limits_Changed(const QString &text)
 {
+    STR3060_mutex.lock();
     long double U=text.toDouble();
     STR3060_Set_Limit(ctx,U,U,U,-1,-1,-1);
     ui->statusbar->showMessage("电压量程命令发送完成!\n\r");
+    STR3060_mutex.unlock();
 }
 void MainWindow::S_I_Limits_Changed(const QString &text)
 {
+    STR3060_mutex.lock();
     long double I=text.toDouble();
     STR3060_Set_Limit(ctx,-1,-1,-1,I,I,I);
      ui->statusbar->showMessage("电流量程命令发送完成!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::S_Output_On_clicked()
 {
+    STR3060_mutex.lock();
     STR3060_Output_On(ctx);
     ui->statusbar->showMessage("打开输出命令发送完成!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::S_Output_Off_clicked()
 {
+    STR3060_mutex.lock();
     STR3060_Output_Off(ctx);
     ui->statusbar->showMessage("关闭输出命令发送完成!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::S_Phase_Check_double(const QString &text)
@@ -313,14 +326,18 @@ void MainWindow::S_Phase_Check_double(const QString &text)
 
 void MainWindow::S_Phase_Clicked()
 {
+    STR3060_mutex.lock();
     long double A=ui->S_A_Phase->text().toDouble(),B=ui->S_B_Phase->text().toDouble(),C=ui->S_C_Phase->text().toDouble();
     STR3060_Set_Phase(ctx,A,B,C,A,B,C);
     ui->statusbar->showMessage("相位设置命令发送成功!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::S_Init_3_Clicked()
 {
+   STR3060_mutex.lock();
    STR3060_Reset(ctx);
+   STR3060_mutex.unlock();
 #ifdef  WIN32
             Sleep(1000);
 #else
@@ -339,7 +356,9 @@ void MainWindow::S_Init_3_Clicked()
     }
    }
 
+   STR3060_mutex.lock();
    STR3060_Set_Limit(ctx,220,220,220,5,5,5);
+   STR3060_mutex.unlock();
    {
     long unsigned count=0;
     while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -353,7 +372,9 @@ void MainWindow::S_Init_3_Clicked()
     }
    }
 
+   STR3060_mutex.lock();
    STR3060_Set_LinkMode(ctx,0);
+   STR3060_mutex.unlock();
    {
     long unsigned count=0;
     while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -367,7 +388,9 @@ void MainWindow::S_Init_3_Clicked()
     }
    }
 
+   STR3060_mutex.lock();
    STR3060_Set_Freq(ctx,50);
+   STR3060_mutex.unlock();
    {
     long unsigned count=0;
     while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -381,7 +404,9 @@ void MainWindow::S_Init_3_Clicked()
     }
    }
 
+   STR3060_mutex.lock();
    STR3060_Set_Phase(ctx,0,120,240,180,120,240);
+   STR3060_mutex.unlock();
    {
     long unsigned count=0;
     while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -395,7 +420,9 @@ void MainWindow::S_Init_3_Clicked()
     }
    }
 
+   STR3060_mutex.lock();
    STR3060_Set_Value(ctx,220,220,220,5,5,5);
+   STR3060_mutex.unlock();
    {
     long unsigned count=0;
     while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -409,7 +436,9 @@ void MainWindow::S_Init_3_Clicked()
     }
    }
 
+   STR3060_mutex.lock();
    STR3060_Output_On(ctx);
+   STR3060_mutex.unlock();
    {
     long unsigned count=0;
     while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -423,7 +452,9 @@ void MainWindow::S_Init_3_Clicked()
     }
    }
 
+   STR3060_mutex.lock();
    STR3060_Set_Phase(ctx,0,120,240,0,120,240);
+   STR3060_mutex.unlock();
    {
     long unsigned count=0;
     while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -438,11 +469,14 @@ void MainWindow::S_Init_3_Clicked()
    }
 
    ui->statusbar->showMessage("快速初始化(三相)完成!\n\r");
+
 }
 
 void MainWindow::S_Init_1_Clicked()
 {
+    STR3060_mutex.lock();
     STR3060_Reset(ctx);
+    STR3060_mutex.unlock();
 #ifdef  WIN32
             Sleep(1000);
 #else
@@ -461,8 +495,9 @@ void MainWindow::S_Init_1_Clicked()
  #endif
      }
     }
-
+    STR3060_mutex.lock();
     STR3060_Set_Limit(ctx,220,220,220,5,5,5);
+    STR3060_mutex.unlock();
     {
      long unsigned count=0;
      while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -476,7 +511,9 @@ void MainWindow::S_Init_1_Clicked()
      }
     }
 
+    STR3060_mutex.lock();
     STR3060_Set_LinkMode(ctx,0);
+    STR3060_mutex.unlock();
     {
      long unsigned count=0;
      while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -490,7 +527,9 @@ void MainWindow::S_Init_1_Clicked()
      }
     }
 
+    STR3060_mutex.lock();
     STR3060_Set_Freq(ctx,50);
+    STR3060_mutex.unlock();
     {
      long unsigned count=0;
      while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -504,7 +543,9 @@ void MainWindow::S_Init_1_Clicked()
      }
     }
 
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,0,120,240,180,120,240);
+    STR3060_mutex.unlock();
     {
      long unsigned count=0;
      while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -518,8 +559,9 @@ void MainWindow::S_Init_1_Clicked()
      }
     }
 
-
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,220,0,0,5,0,0);
+    STR3060_mutex.unlock();
     {
      long unsigned count=0;
      while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -533,7 +575,9 @@ void MainWindow::S_Init_1_Clicked()
      }
     }
 
+    STR3060_mutex.lock();
     STR3060_Output_On(ctx);
+    STR3060_mutex.unlock();
     {
      long unsigned count=0;
      while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -547,7 +591,9 @@ void MainWindow::S_Init_1_Clicked()
      }
     }
 
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,0,120,240,0,120,240);
+    STR3060_mutex.unlock();
     {
      long unsigned count=0;
      while((!STR3060_Query_Success(ctx))&&(count<3000))
@@ -562,10 +608,12 @@ void MainWindow::S_Init_1_Clicked()
     }
 
     ui->statusbar->showMessage("快速初始化（单相）完成!\n\r");
+
 }
 
 void MainWindow::S_Freq_Changed(const QString &text)
 {
+    STR3060_mutex.lock();
     bool is_success=false;
     text.toDouble(&is_success);
     if(is_success)
@@ -577,6 +625,7 @@ void MainWindow::S_Freq_Changed(const QString &text)
     {
         ui->S_Freq->setText("50.0");
     }
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::UI_Timer_timeout()
@@ -1038,11 +1087,13 @@ void MainWindow::UI_Timer_timeout()
 
 void MainWindow::Request_Timer_timeout()
 {
+    STR3060_mutex.lock();
    if(Is_SerialPort_Open)
     {//请求数据
         STR3060_Request_Data(ctx);
         ui->statusbar->showMessage("正在请求数据");
     }
+   STR3060_mutex.unlock();
 }
 
 void MainWindow::Second_Tick_Timer_timeout()
@@ -1092,14 +1143,18 @@ void MainWindow::on_S_U_UA_Phase_sliderMoved(int position)
 
 void MainWindow::on_S_U_UA_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,(long double)ui->S_U_UA->value()/STR3060_Get_KU(ctx,STR3060_A),-1,-1,-1,-1,-1);
     ui->statusbar->showMessage("A相电压设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_U_UA_Phase_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,(long double)ui->S_U_UA_Phase->value()/STR3060_Get_KPhase(ctx),-1,-1,-1,-1,-1);
     ui->statusbar->showMessage("A相相位设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_U_UB_sliderMoved(int position)
@@ -1114,14 +1169,18 @@ void MainWindow::on_S_U_UB_Phase_sliderMoved(int position)
 
 void MainWindow::on_S_U_UB_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,-1,(long double)ui->S_U_UB->value()/STR3060_Get_KU(ctx,STR3060_B),-1,-1,-1,-1);
     ui->statusbar->showMessage("B相电压设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_U_UB_Phase_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,-1,(long double)ui->S_U_UB_Phase->value()/STR3060_Get_KPhase(ctx),-1,-1,-1,-1);
     ui->statusbar->showMessage("B相相位设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_U_UC_sliderMoved(int position)
@@ -1136,14 +1195,18 @@ void MainWindow::on_S_U_UC_Phase_sliderMoved(int position)
 
 void MainWindow::on_S_U_UC_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,-1,-1,(long double)ui->S_U_UC->value()/STR3060_Get_KU(ctx,STR3060_C),-1,-1,-1);
     ui->statusbar->showMessage("C相电压设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_U_UC_Phase_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,-1,-1,(long double)ui->S_U_UC_Phase->value()/STR3060_Get_KPhase(ctx),-1,-1,-1);
     ui->statusbar->showMessage("C相相位设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_I_IA_sliderMoved(int position)
@@ -1158,14 +1221,18 @@ void MainWindow::on_S_I_IA_Phase_sliderMoved(int position)
 
 void MainWindow::on_S_I_IA_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,-1,-1,-1,(long double)ui->S_I_IA->value()/STR3060_Get_KI(ctx,STR3060_A),-1,-1);
     ui->statusbar->showMessage("A相电流设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_I_IA_Phase_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,-1,-1,-1,(long double)ui->S_I_IA_Phase->value()/STR3060_Get_KPhase(ctx),-1,-1);
     ui->statusbar->showMessage("A相相位设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_I_IB_sliderMoved(int position)
@@ -1180,14 +1247,18 @@ void MainWindow::on_S_I_IB_Phase_sliderMoved(int position)
 
 void MainWindow::on_S_I_IB_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,-1,-1,-1,-1,(long double)ui->S_I_IB->value()/STR3060_Get_KI(ctx,STR3060_B),-1);
     ui->statusbar->showMessage("B相电流设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_I_IB_Phase_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,-1,-1,-1,-1,(long double)ui->S_I_IB_Phase->value()/STR3060_Get_KPhase(ctx),-1);
     ui->statusbar->showMessage("B相相位设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_I_IC_sliderMoved(int position)
@@ -1202,14 +1273,18 @@ void MainWindow::on_S_I_IC_Phase_sliderMoved(int position)
 
 void MainWindow::on_S_I_IC_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,-1,-1,-1,-1,-1,(long double)ui->S_I_IC->value()/STR3060_Get_KI(ctx,STR3060_C));
     ui->statusbar->showMessage("C相电流设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_I_IC_Phase_sliderReleased()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,-1,-1,-1,-1,-1,(long double)ui->S_I_IC_Phase->value()/STR3060_Get_KPhase(ctx));
     ui->statusbar->showMessage("C相相位设置命令已发出!\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_V_UA_textChanged(const QString &arg1)
@@ -1274,6 +1349,7 @@ void MainWindow::on_S_V_IC_textChanged(const QString &arg1)
 
 void MainWindow::on_S_V_Set_Value_clicked()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Value(ctx,(long double)ui->S_V_UA->text().toDouble(),
                           (long double)ui->S_V_UB->text().toDouble(),
                           (long double)ui->S_V_UC->text().toDouble(),
@@ -1281,6 +1357,7 @@ void MainWindow::on_S_V_Set_Value_clicked()
                           (long double)ui->S_V_IB->text().toDouble(),
                           (long double)ui->S_V_IC->text().toDouble());
     ui->statusbar->showMessage("发送值设定命令成功\n\r");
+    STR3060_mutex.unlock();
 }
 
 void MainWindow::on_S_V_UA_phase_textChanged(const QString &arg1)
@@ -1345,6 +1422,7 @@ void MainWindow::on_S_V_IC_phase_textChanged(const QString &arg1)
 
 void MainWindow::on_S_V_Set_Value_phase_clicked()
 {
+    STR3060_mutex.lock();
     STR3060_Set_Phase(ctx,(long double)ui->S_V_UA_phase->text().toDouble(),
                           (long double)ui->S_V_UB_phase->text().toDouble(),
                           (long double)ui->S_V_UC_phase->text().toDouble(),
@@ -1352,4 +1430,5 @@ void MainWindow::on_S_V_Set_Value_phase_clicked()
                           (long double)ui->S_V_IB_phase->text().toDouble(),
                           (long double)ui->S_V_IC_phase->text().toDouble());
     ui->statusbar->showMessage("发送相位设定命令成功\n\r");
+    STR3060_mutex.unlock();
 }

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <thread>
+#include <mutex>
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QSerialPortInfo>
@@ -25,6 +26,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    std::mutex STR3060_mutex;
+
     STR3060_Context *ctx;//STR3060设备上下文
     bool Is_SerialPort_Open;//是否已打开串口
     std::thread *STR3060_Receiver;
